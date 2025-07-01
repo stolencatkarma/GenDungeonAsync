@@ -82,14 +82,17 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
         dungeonFuture.thenAccept(dungeon -> {
             // This runs on the main thread
             plugin.getDungeonManager().assignPlayerToDungeon(player, dungeon);
-            
+
+            // Set player to adventure mode
+            player.setGameMode(org.bukkit.GameMode.ADVENTURE);
+
             player.sendMessage(Component.text("Dungeon '")
                     .color(NamedTextColor.GREEN)
                     .append(Component.text(dungeon.getName())
                             .color(NamedTextColor.GOLD))
                     .append(Component.text("' has been generated!")
                             .color(NamedTextColor.GREEN)));
-            
+
             player.sendMessage(Component.text("Size: ")
                     .color(NamedTextColor.GRAY)
                     .append(Component.text(finalSize.name())
@@ -98,11 +101,11 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
                             .color(NamedTextColor.GRAY))
                     .append(Component.text(finalDifficulty.name())
                             .color(NamedTextColor.WHITE)));
-            
+
             // Teleport player to dungeon entrance
             player.teleport(dungeon.getStartLocation().add(
                     dungeon.getSize().getWidth() / 2.0, 2, 0));
-            
+
         }).exceptionally(throwable -> {
             player.sendMessage(Component.text("Failed to generate dungeon: " + throwable.getMessage())
                     .color(NamedTextColor.RED));

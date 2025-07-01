@@ -9,9 +9,10 @@ import java.util.List;
 import java.util.UUID;
 
 public class Dungeon {
-    
+
     private final UUID id;
     private final String name;
+    private final String worldName;
     private final Location startLocation;
     private final Location endLocation;
     private final DungeonSize size;
@@ -19,11 +20,12 @@ public class Dungeon {
     private final List<UUID> players;
     private final long createdTime;
     private boolean completed;
-    
-    public Dungeon(String name, Location startLocation, Location endLocation, 
+
+    public Dungeon(String name, String worldName, Location startLocation, Location endLocation,
                    DungeonSize size, DungeonDifficulty difficulty) {
         this.id = UUID.randomUUID();
         this.name = name;
+        this.worldName = worldName;
         this.startLocation = startLocation;
         this.endLocation = endLocation;
         this.size = size;
@@ -55,6 +57,9 @@ public class Dungeon {
         this.completed = completed;
     }
     
+    public String getWorldName() {
+        return worldName;
+    }
     public World getWorld() {
         return startLocation.getWorld();
     }

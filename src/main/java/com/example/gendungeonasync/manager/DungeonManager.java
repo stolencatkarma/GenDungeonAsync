@@ -17,12 +17,14 @@ public class DungeonManager {
     private final Map<UUID, Dungeon> dungeons;
     private final Map<UUID, UUID> playerDungeons; // Player UUID -> Dungeon UUID
     private final Map<UUID, Location> playerPreviousLocations; // Player UUID -> Previous Location
+    private final Map<UUID, org.bukkit.GameMode> playerPreviousGameModes; // Player UUID -> Previous GameMode
     
     public DungeonManager(GenDungeonAsync plugin) {
         this.plugin = plugin;
         this.dungeons = new ConcurrentHashMap<>();
         this.playerDungeons = new ConcurrentHashMap<>();
         this.playerPreviousLocations = new ConcurrentHashMap<>();
+        this.playerPreviousGameModes = new ConcurrentHashMap<>();
     }
     
     public void addDungeon(Dungeon dungeon) {
@@ -42,8 +44,9 @@ public class DungeonManager {
     }
     
     public void assignPlayerToDungeon(Player player, Dungeon dungeon) {
-        // Store player's current location before teleporting
+        // Store player's current location and gamemode before teleporting
         playerPreviousLocations.put(player.getUniqueId(), player.getLocation());
+        playerPreviousGameModes.put(player.getUniqueId(), player.getGameMode());
         playerDungeons.put(player.getUniqueId(), dungeon.getId());
         dungeon.addPlayer(player);
     }
@@ -51,9 +54,13 @@ public class DungeonManager {
     public void removePlayerFromDungeon(Player player) {
         UUID dungeonId = playerDungeons.remove(player.getUniqueId());
         playerPreviousLocations.remove(player.getUniqueId());
+        playerPreviousGameModes.remove(player.getUniqueId());
         if (dungeonId != null) {
             getDungeon(dungeonId).ifPresent(dungeon -> dungeon.removePlayer(player));
         }
+    }
+    public Optional<org.bukkit.GameMode> getPlayerPreviousGameMode(Player player) {
+        return Optional.ofNullable(playerPreviousGameModes.get(player.getUniqueId()));
     }
     
     public Optional<Location> getPlayerPreviousLocation(Player player) {
@@ -77,6 +84,7 @@ public class DungeonManager {
         dungeons.clear();
         playerDungeons.clear();
         playerPreviousLocations.clear();
+        playerPreviousGameModes.clear();
     }
     
     public boolean isDungeonLocation(Location location) {

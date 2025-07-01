@@ -37,11 +37,18 @@ public class DungeonLeaveCommand implements CommandExecutor {
         // Store the dungeon name for the message
         String dungeonName = playerDungeon.getName();
 
-        // Get previous location if available
+
+        // Get previous location and gamemode if available
         var prevLocOpt = plugin.getDungeonManager().getPlayerPreviousLocation(player);
+        var prevGameModeOpt = plugin.getDungeonManager().getPlayerPreviousGameMode(player);
 
         // Remove player from dungeon
         plugin.getDungeonManager().removePlayerFromDungeon(player);
+
+        // Restore previous gamemode if possible
+        if (prevGameModeOpt.isPresent()) {
+            player.setGameMode(prevGameModeOpt.get());
+        }
 
         // Teleport player back to previous location or world spawn
         if (prevLocOpt.isPresent()) {
@@ -62,12 +69,36 @@ public class DungeonLeaveCommand implements CommandExecutor {
                             .color(NamedTextColor.GREEN)));
         }
 
-        // Optional: Clean up empty dungeons
+        // Clean up empty dungeon and delete world if empty
         if (playerDungeon.getPlayers().isEmpty()) {
             plugin.getDungeonManager().removeDungeon(playerDungeon.getId());
             plugin.getLogger().info("Cleaned up empty dungeon: " + dungeonName + " (" + playerDungeon.getId() + ")");
+
+            // Unload and delete the world
+            String worldName = playerDungeon.getWorldName();
+            org.bukkit.World world = org.bukkit.Bukkit.getWorld(worldName);
+            if (world != null) {
+                // Teleport any remaining players just in case
+                for (Player p : world.getPlayers()) {
+                    p.teleport(p.getServer().getWorlds().get(0).getSpawnLocation());
+                }
+                org.bukkit.Bukkit.unloadWorld(world, false);
+                java.io.File worldFolder = world.getWorldFolder();
+                deleteWorldFolder(worldFolder);
+                plugin.getLogger().info("Deleted dungeon world: " + worldName);
+            }
         }
 
         return true;
+    }
+
+    // Recursively delete a world folder
+    private void deleteWorldFolder(java.io.File file) {
+        if (file.isDirectory()) {
+            for (java.io.File child : file.listFiles()) {
+                deleteWorldFolder(child);
+            }
+        }
+        file.delete();
     }
 }

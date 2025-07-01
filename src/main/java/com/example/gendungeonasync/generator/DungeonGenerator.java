@@ -28,28 +28,34 @@ public class DungeonGenerator {
     
     public CompletableFuture<Dungeon> generateDungeonAsync(Player player, DungeonSize size, DungeonDifficulty difficulty) {
         CompletableFuture<Dungeon> future = new CompletableFuture<>();
-        
-        // Find a suitable location asynchronously
+
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
-                Location dungeonLocation = findSuitableLocation(player);
                 String dungeonName = generateDungeonName();
-                
-                // Switch back to main thread for world modification
+                String worldName = "dungeon_" + dungeonName.toLowerCase().replaceAll("[^a-z0-9]", "") + "_" + System.currentTimeMillis();
+
+                // Create new world for this dungeon
                 Bukkit.getScheduler().runTask(plugin, () -> {
+                    WorldCreator creator = new WorldCreator(worldName);
+                    creator.environment(World.Environment.NORMAL);
+                    creator.type(WorldType.NORMAL);
+                    creator.generatorSettings("");
+                    World dungeonWorld = creator.createWorld();
+
+                    // Place dungeon at 0, 64, 0 in the new world
+                    Location dungeonLocation = new Location(dungeonWorld, 0, 64, 0);
                     try {
-                        Dungeon dungeon = buildDungeon(dungeonName, dungeonLocation, size, difficulty);
+                        Dungeon dungeon = buildDungeon(dungeonName, worldName, dungeonLocation, size, difficulty);
                         future.complete(dungeon);
                     } catch (Exception e) {
                         future.completeExceptionally(e);
                     }
                 });
-                
             } catch (Exception e) {
                 future.completeExceptionally(e);
             }
         });
-        
+
         return future;
     }
     
@@ -95,22 +101,22 @@ public class DungeonGenerator {
         return solidBlocks > 80; // At least 80% solid ground
     }
     
-    private Dungeon buildDungeon(String name, Location startLocation, DungeonSize size, DungeonDifficulty difficulty) {
+    private Dungeon buildDungeon(String name, String worldName, Location startLocation, DungeonSize size, DungeonDifficulty difficulty) {
         World world = startLocation.getWorld();
         int startX = startLocation.getBlockX();
         int startY = startLocation.getBlockY();
         int startZ = startLocation.getBlockZ();
-        
-        Location endLocation = new Location(world, 
-            startX + size.getWidth(), 
-            startY + size.getHeight(), 
+
+        Location endLocation = new Location(world,
+            startX + size.getWidth(),
+            startY + size.getHeight(),
             startZ + size.getLength());
-        
+
         // Build the dungeon structure asynchronously in chunks
         new BukkitRunnable() {
             private int currentX = 0;
             private int currentZ = 0;
-            
+
             @Override
             public void run() {
                 // Process a small chunk each tick to avoid lag
@@ -121,12 +127,12 @@ public class DungeonGenerator {
                         currentX++;
                         continue;
                     }
-                    
-                    buildDungeonBlock(startX + currentX, startY, startZ + currentZ, size);
+
+                    buildDungeonBlock(world, startX + currentX, startY, startZ + currentZ, size);
                     currentZ++;
                     processed++;
                 }
-                
+
                 if (currentX >= size.getWidth()) {
                     // Dungeon structure complete, add details
                     addDungeonDetails(startLocation, size, difficulty);
@@ -134,20 +140,18 @@ public class DungeonGenerator {
                 }
             }
         }.runTaskTimer(plugin, 0L, 1L);
-        
-        Dungeon dungeon = new Dungeon(name, startLocation, endLocation, size, difficulty);
+
+        Dungeon dungeon = new Dungeon(name, worldName, startLocation, endLocation, size, difficulty);
         plugin.getDungeonManager().addDungeon(dungeon);
-        
+
         return dungeon;
     }
     
-    private void buildDungeonBlock(int x, int y, int z, DungeonSize size) {
-        World world = Bukkit.getWorlds().get(0); // Assuming overworld
-        
+    private void buildDungeonBlock(World world, int x, int y, int z, DungeonSize size) {
         // Build walls and floors
         for (int dy = 0; dy < size.getHeight(); dy++) {
             Block block = world.getBlockAt(x, y + dy, z);
-            
+
             // Determine block type based on position
             if (dy == 0) {
                 // Floor

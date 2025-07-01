@@ -12,6 +12,8 @@ A Paper plugin for Minecraft 1.21.3+ that generates random dungeons asynchronous
 - **Treasure Chests**: Find loot scattered throughout the dungeon
 - **Lighting**: Automatic torch placement for visibility
 - **Player Management**: Track which players are in which dungeons
+- **Adventure Mode Enforcement**: Players are set to Adventure mode while in dungeons, and their previous GameMode is restored on exit
+- **Isolated Dungeon Worlds**: Each dungeon is generated in its own temporary dimension, which is deleted when all players leave
 
 ## Commands
 
