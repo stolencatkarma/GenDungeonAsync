@@ -38,7 +38,7 @@ gradlew build
 
 # Deploy to server
 gradlew deployToServer
-# -> Builds and copies to D:/paper-1.21.7/plugins
+# -> Builds and copies to D:/dev-server-1.21.4-towny/plugins
 
 # Clean release build (after committing changes)
 git commit -m "Release changes"
