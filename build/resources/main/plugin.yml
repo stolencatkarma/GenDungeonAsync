@@ -1,0 +1,39 @@
+name: GenDungeonAsync
+version: '1.0.0'
+description: Async Dungeon Generator Plugin for Paper 1.21.1
+main: com.example.gendungeonasync.GenDungeonAsync
+api-version: '1.21'
+author: YourName
+
+commands:
+  dungeon:
+    description: Generate a random dungeon
+    usage: /dungeon [size] [difficulty]
+    permission: gendungeon.create
+    aliases: [dg, gen]
+  
+  dungeontp:
+    description: Teleport to a generated dungeon
+    usage: /dungeontp <player> <dungeon_id>
+    permission: gendungeon.teleport
+    aliases: [dtp]
+
+permissions:
+  gendungeon.*:
+    description: All dungeon permissions
+    children:
+      gendungeon.create: true
+      gendungeon.teleport: true
+      gendungeon.admin: true
+  
+  gendungeon.create:
+    description: Allow creating dungeons
+    default: true
+  
+  gendungeon.teleport:
+    description: Allow teleporting to dungeons
+    default: op
+  
+  gendungeon.admin:
+    description: Admin permissions for dungeon management
+    default: op
