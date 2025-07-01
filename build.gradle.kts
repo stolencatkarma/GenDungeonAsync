@@ -6,7 +6,16 @@ plugins {
 }
 
 group = "com.example"
-version = gitVersion()
+
+// Git-based versioning with fallback
+val gitVersion: groovy.lang.Closure<String> by extra
+version = try {
+    gitVersion()
+} catch (e: Exception) {
+    // Fallback version if git is not available or crashes
+    "1.0.0-SNAPSHOT"
+}
+
 description = "Async Dungeon Generator Plugin for Paper 1.21.1"
 
 java {

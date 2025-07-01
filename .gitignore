@@ -1,20 +1,16 @@
 # Gradle
 .gradle/
 build/
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
+gradle-app.setting
+!gradle-wrapper.jar
+!gradle-wrapper.properties
 
 # IDE
 .idea/
-*.iws
+.vscode/
 *.iml
 *.ipr
-.vscode/
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+*.iws
 
 # OS
 .DS_Store
@@ -23,10 +19,14 @@ Thumbs.db
 # Logs
 *.log
 
-# Paper test server files
-run/
-cache/
-logs/
+# Java
+*.class
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
 
-# Plugin development
-test-server/
+# Paper development
+work/
+cache/
+
+# Plugin output
+run/

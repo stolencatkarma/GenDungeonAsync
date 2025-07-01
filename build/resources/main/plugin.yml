@@ -1,5 +1,5 @@
 name: GenDungeonAsync
-version: '1.0.0'
+version: 'v1.0.0.dirty'
 description: Async Dungeon Generator Plugin for Paper 1.21.1
 main: com.example.gendungeonasync.GenDungeonAsync
 api-version: '1.21'
