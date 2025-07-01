@@ -1,6 +1,7 @@
 package com.example.gendungeonasync;
 
 import com.example.gendungeonasync.commands.DungeonCommand;
+import com.example.gendungeonasync.commands.DungeonLeaveCommand;
 import com.example.gendungeonasync.commands.DungeonTeleportCommand;
 import com.example.gendungeonasync.generator.DungeonGenerator;
 import com.example.gendungeonasync.listener.DungeonEventListener;
@@ -21,6 +22,7 @@ public final class GenDungeonAsync extends JavaPlugin {
         // Register commands
         getCommand("dungeon").setExecutor(new DungeonCommand(this));
         getCommand("dungeontp").setExecutor(new DungeonTeleportCommand(this));
+        getCommand("dungeonleave").setExecutor(new DungeonLeaveCommand(this));
         
         // Register event listeners
         getServer().getPluginManager().registerEvents(new DungeonEventListener(this), this);

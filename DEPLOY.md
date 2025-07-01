@@ -30,7 +30,7 @@ gradlew build
 ## After Deployment
 1. **Restart your Paper server** or use `/reload confirm` (not recommended for production)
 2. **Check server logs** for successful plugin loading
-3. **Test the plugin** with `/dungeon small easy`
+3. **Test the plugin** with `/dungeon small easy` and `/dungeonleave`
 4. **Configure** in `plugins/GenDungeonAsync/config.yml` if needed
 
 ## Development Tips

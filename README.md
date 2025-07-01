@@ -31,6 +31,11 @@ A Paper plugin for Minecraft 1.21.3+ that generates random dungeons asynchronous
     - `/dungeontp PlayerName` - Teleport to PlayerName's active dungeon
     - `/dungeontp PlayerName <uuid>` - Teleport to specific dungeon by ID
 
+- `/dungeonleave` - Leave your current dungeon
+  - Aliases: `/dleave`, `/dexit`
+  - Permission: `gendungeon.create`
+  - Teleports you back to spawn and removes you from the dungeon
+
 ## Usage Examples
 
 ### Basic Usage
@@ -39,7 +44,8 @@ A Paper plugin for Minecraft 1.21.3+ that generates random dungeons asynchronous
 2. Plugin generates dungeon asynchronously (no server lag)
 3. Player is teleported to dungeon entrance
 4. Player explores, fights mobs, and collects loot
-5. When player leaves/dies, they're removed from the dungeon
+5. When finished, player runs: /dungeonleave to exit safely
+6. Player is teleported back to spawn
 ```
 
 ### Admin Usage
@@ -47,6 +53,7 @@ A Paper plugin for Minecraft 1.21.3+ that generates random dungeons asynchronous
 1. Admin runs: /dungeontp Steve
 2. Admin is teleported to Steve's active dungeon
 3. Admin can help or observe the player
+4. Admin uses /dungeonleave to exit when done
 ```
 
 ## Permissions

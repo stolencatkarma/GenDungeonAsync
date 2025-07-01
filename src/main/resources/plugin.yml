@@ -2,7 +2,7 @@ name: ${name}
 version: '${version}'
 description: ${description}
 main: com.example.gendungeonasync.GenDungeonAsync
-api-version: '${apiVersion}'
+api-version: '1.21'
 author: YourName
 
 commands:
@@ -17,6 +17,12 @@ commands:
     usage: /dungeontp <player> <dungeon_id>
     permission: gendungeon.teleport
     aliases: [dtp]
+  
+  dungeonleave:
+    description: Leave your current dungeon
+    usage: /dungeonleave
+    permission: gendungeon.create
+    aliases: [dleave, dexit]
 
 permissions:
   gendungeon.*:
