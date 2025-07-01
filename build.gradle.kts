@@ -84,9 +84,9 @@ tasks {
     
     // Task to build and copy in one command
     register("deployToServer") {
-        dependsOn("build", "copyToServer")
+        dependsOn("clean", "copyToServer")
         group = "deployment"
-        description = "Builds the plugin and copies it to the Paper server plugins folder"
+        description = "Cleans, builds the plugin and copies it to the Paper server plugins folder"
         
         doLast {
             println("Plugin built and deployed to Paper server!")
