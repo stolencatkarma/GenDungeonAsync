@@ -30,3 +30,7 @@ cache/
 
 # Plugin output
 run/
+
+# Build outputs that shouldn't be tracked
+**/build/
+**/out/
