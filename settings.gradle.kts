@@ -1,1 +1,1 @@
-rootProject.name = "GenDungeonAsync"
+rootProject.name = "GenDungeon"

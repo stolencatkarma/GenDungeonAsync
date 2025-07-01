@@ -30,7 +30,7 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
                     .color(NamedTextColor.RED));
             return true;
         }
-        
+
         if (!player.hasPermission("gendungeon.create")) {
             player.sendMessage(Component.text("You don't have permission to create dungeons!")
                     .color(NamedTextColor.RED));

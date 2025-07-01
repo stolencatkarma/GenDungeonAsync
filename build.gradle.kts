@@ -1,3 +1,5 @@
+group = "com.example"
+
 plugins {
     `java-library`
     id("io.papermc.paperweight.userdev") version "1.7.2"

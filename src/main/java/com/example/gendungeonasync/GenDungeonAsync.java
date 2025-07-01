@@ -20,7 +20,7 @@ public final class GenDungeonAsync extends JavaPlugin {
         this.dungeonGenerator = new DungeonGenerator(this);
         
         // Register commands
-        getCommand("dungeon").setExecutor(new DungeonCommand(this));
+        getCommand("gendungeon").setExecutor(new DungeonCommand(this));
         getCommand("dungeontp").setExecutor(new DungeonTeleportCommand(this));
         getCommand("dungeonleave").setExecutor(new DungeonLeaveCommand(this));
         

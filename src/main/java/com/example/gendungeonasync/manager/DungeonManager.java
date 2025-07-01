@@ -16,11 +16,13 @@ public class DungeonManager {
     private final GenDungeonAsync plugin;
     private final Map<UUID, Dungeon> dungeons;
     private final Map<UUID, UUID> playerDungeons; // Player UUID -> Dungeon UUID
+    private final Map<UUID, Location> playerPreviousLocations; // Player UUID -> Previous Location
     
     public DungeonManager(GenDungeonAsync plugin) {
         this.plugin = plugin;
         this.dungeons = new ConcurrentHashMap<>();
         this.playerDungeons = new ConcurrentHashMap<>();
+        this.playerPreviousLocations = new ConcurrentHashMap<>();
     }
     
     public void addDungeon(Dungeon dungeon) {
@@ -40,15 +42,22 @@ public class DungeonManager {
     }
     
     public void assignPlayerToDungeon(Player player, Dungeon dungeon) {
+        // Store player's current location before teleporting
+        playerPreviousLocations.put(player.getUniqueId(), player.getLocation());
         playerDungeons.put(player.getUniqueId(), dungeon.getId());
         dungeon.addPlayer(player);
     }
     
     public void removePlayerFromDungeon(Player player) {
         UUID dungeonId = playerDungeons.remove(player.getUniqueId());
+        playerPreviousLocations.remove(player.getUniqueId());
         if (dungeonId != null) {
             getDungeon(dungeonId).ifPresent(dungeon -> dungeon.removePlayer(player));
         }
+    }
+    
+    public Optional<Location> getPlayerPreviousLocation(Player player) {
+        return Optional.ofNullable(playerPreviousLocations.get(player.getUniqueId()));
     }
     
     public void removeDungeon(UUID dungeonId) {
@@ -67,6 +76,7 @@ public class DungeonManager {
         // Clean up any resources or save data if needed
         dungeons.clear();
         playerDungeons.clear();
+        playerPreviousLocations.clear();
     }
     
     public boolean isDungeonLocation(Location location) {

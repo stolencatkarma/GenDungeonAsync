@@ -1,4 +1,4 @@
-name: ${name}
+name: GenDungeon
 version: '${version}'
 description: ${description}
 main: com.example.gendungeonasync.GenDungeonAsync
@@ -6,11 +6,11 @@ api-version: '1.21'
 author: YourName
 
 commands:
-  dungeon:
+  gendungeon:
     description: Generate a random dungeon
-    usage: /dungeon [size] [difficulty]
+    usage: /gendungeon [size] [difficulty]
     permission: gendungeon.create
-    aliases: [dg, gen]
+    aliases: [dg, gen, dungeon]
   
   dungeontp:
     description: Teleport to a generated dungeon
