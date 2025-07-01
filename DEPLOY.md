@@ -8,14 +8,16 @@ gradlew deployToServer
 ```
 This command will:
 - Clean and build the plugin
-- Copy the JAR to `D:\paper-1.21.7\plugins`
+- Remove old GenDungeonAsync JAR files from plugins folder
+- Copy the new JAR to `D:\paper-1.21.7\plugins`
 - Display success message
 
 ### 2. Quick Copy (if already built)
 ```bash
 gradlew copyToServer
 ```
-Just copies the existing JAR to the server.
+- Removes old plugin JARs
+- Copies the existing JAR to the server
 
 ### 3. Manual Method
 ```bash
@@ -32,7 +34,8 @@ gradlew build
 
 ## Development Tips
 - Use `gradlew deployToServer` for every code change
-- The JAR will overwrite the previous version automatically
+- Old plugin JARs are automatically removed to prevent conflicts
+- The new JAR will replace any previous versions automatically
 - Check server console for any errors after reload
 - Use `/pl` command to verify plugin is loaded
 

@@ -64,6 +64,19 @@ tasks {
         into("D:/paper-1.21.7/plugins")
         include("*.jar")
         
+        doFirst {
+            // Remove old plugin JARs before copying new one
+            val pluginsDir = file("D:/paper-1.21.7/plugins")
+            if (pluginsDir.exists()) {
+                pluginsDir.listFiles()?.forEach { file ->
+                    if (file.name.startsWith("GenDungeonAsync-") && file.name.endsWith(".jar")) {
+                        println("Removing old plugin JAR: ${file.name}")
+                        file.delete()
+                    }
+                }
+            }
+        }
+        
         doLast {
             println("Plugin JAR copied to D:/paper-1.21.7/plugins")
         }
