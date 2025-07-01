@@ -1,6 +1,6 @@
 # GenDungeonAsync
 
-A Paper plugin for Minecraft 1.21.1 that generates random dungeons asynchronously for players to explore and adventure through.
+A Paper plugin for Minecraft 1.21.3+ that generates random dungeons asynchronously for players to explore and adventure through. **Compatible with Minecraft 1.21.4**.
 
 ## Features
 
@@ -95,7 +95,7 @@ The plugin can be configured via `config.yml`:
 
 ## Requirements
 
-- Paper 1.21.1 or compatible
+- Paper 1.21.3+ or compatible (including 1.21.4)
 - Java 21
 - Minecraft server with sufficient RAM for async operations
 

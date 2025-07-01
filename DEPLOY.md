@@ -10,7 +10,7 @@ This command will:
 - **Clean** the build directory (removes old JARs)
 - **Build** the plugin with current Git version
 - **Remove** old GenDungeonAsync JAR files from plugins folder
-- **Copy** only the new JAR to `D:\paper-1.21.7\plugins`
+- **Copy** only the new JAR to `D:\dev-server-1.21.4-towny\plugins`
 - **Display** success message
 
 ### 2. Quick Copy (if already built)
@@ -24,7 +24,7 @@ gradlew copyToServer
 ```bash
 gradlew build
 # Then manually copy: build/libs/GenDungeonAsync-1.0.0-dev.jar
-#                to: D:\paper-1.21.7\plugins\
+#                to: D:\dev-server-1.21.4-towny\plugins\
 ```
 
 ## After Deployment
@@ -47,4 +47,4 @@ gradlew build
 - **Version clarity** - Easy to identify current deployed version
 
 ## Server Path
-Your Paper server plugins folder: `D:\paper-1.21.7\plugins`
+Your Paper server plugins folder: `D:\dev-server-1.21.4-towny\plugins`

@@ -16,7 +16,7 @@ version = try {
     "1.0.0-SNAPSHOT"
 }
 
-description = "Async Dungeon Generator Plugin for Paper 1.21.1"
+description = "Async Dungeon Generator Plugin for Paper 1.21.3+ (Compatible with 1.21.4)"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(21))
@@ -27,7 +27,7 @@ repositories {
 }
 
 dependencies {
-    paperweight.paperDevBundle("1.21.1-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21.3-R0.1-SNAPSHOT")
 }
 
 tasks {
@@ -44,8 +44,7 @@ tasks {
         val props = mapOf(
             "name" to project.name,
             "version" to project.version,
-            "description" to project.description,
-            "apiVersion" to "1.21"
+            "description" to project.description
         )
         inputs.properties(props)
         filesMatching("plugin.yml") {
@@ -54,19 +53,19 @@ tasks {
     }
     
     runServer {
-        minecraftVersion("1.21.1")
+        minecraftVersion("1.21.4")
     }
     
     // Task to copy JAR to Paper server plugins folder
     register<Copy>("copyToServer") {
         dependsOn("jar")
         from("build/libs")
-        into("D:/paper-1.21.7/plugins")
+        into("D:/dev-server-1.21.4-towny/plugins")
         include("*.jar")
         
         doFirst {
             // Remove old plugin JARs before copying new one
-            val pluginsDir = file("D:/paper-1.21.7/plugins")
+            val pluginsDir = file("D:/dev-server-1.21.4-towny/plugins")
             if (pluginsDir.exists()) {
                 pluginsDir.listFiles()?.forEach { file ->
                     if (file.name.startsWith("GenDungeonAsync-") && file.name.endsWith(".jar")) {
@@ -78,7 +77,7 @@ tasks {
         }
         
         doLast {
-            println("Plugin JAR copied to D:/paper-1.21.7/plugins")
+            println("Plugin JAR copied to D:/dev-server-1.21.4-towny/plugins")
         }
     }
     
