@@ -102,9 +102,8 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
                     .append(Component.text(finalDifficulty.name())
                             .color(NamedTextColor.WHITE)));
 
-            // Teleport player to dungeon entrance
-            player.teleport(dungeon.getStartLocation().add(
-                    dungeon.getSize().getWidth() / 2.0, 2, 0));
+            // Teleport player to the world spawn (center of dungeon)
+            player.teleport(dungeon.getWorld().getSpawnLocation());
 
         }).exceptionally(throwable -> {
             player.sendMessage(Component.text("Failed to generate dungeon: " + throwable.getMessage())

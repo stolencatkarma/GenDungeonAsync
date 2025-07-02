@@ -42,8 +42,21 @@ public class DungeonGenerator {
                     creator.generatorSettings("");
                     World dungeonWorld = creator.createWorld();
 
-                    // Place dungeon at 0, 64, 0 in the new world
-                    Location dungeonLocation = new Location(dungeonWorld, 0, 64, 0);
+                    // Center the dungeon around (0, 64, 0)
+                    int centerX = 0;
+                    int centerY = 64;
+                    int centerZ = 0;
+                    int startX = centerX - size.getWidth() / 2;
+                    int startY = centerY;
+                    int startZ = centerZ - size.getLength() / 2;
+                    Location dungeonLocation = new Location(dungeonWorld, startX, startY, startZ);
+
+                    // Set world spawn to the center of the dungeon
+                    int spawnX = centerX;
+                    int spawnY = centerY + 2;
+                    int spawnZ = centerZ;
+                    dungeonWorld.setSpawnLocation(spawnX, spawnY, spawnZ);
+
                     try {
                         Dungeon dungeon = buildDungeon(dungeonName, worldName, dungeonLocation, size, difficulty);
                         future.complete(dungeon);
