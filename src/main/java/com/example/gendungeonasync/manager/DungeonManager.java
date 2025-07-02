@@ -56,8 +56,43 @@ public class DungeonManager {
         playerPreviousLocations.remove(player.getUniqueId());
         playerPreviousGameModes.remove(player.getUniqueId());
         if (dungeonId != null) {
-            getDungeon(dungeonId).ifPresent(dungeon -> dungeon.removePlayer(player));
+            Dungeon dungeon = dungeons.get(dungeonId);
+            if (dungeon != null) {
+                dungeon.removePlayer(player);
+                // If dungeon is now empty, clean up
+                if (dungeon.getPlayers().isEmpty()) {
+                    removeDungeonAndWorld(dungeon);
+                }
+            }
         }
+    }
+
+    private void removeDungeonAndWorld(Dungeon dungeon) {
+        removeDungeon(dungeon.getId());
+        plugin.getLogger().info("Cleaned up empty dungeon: " + dungeon.getName() + " (" + dungeon.getId() + ")");
+        // Unload and delete the world
+        String worldName = dungeon.getWorldName();
+        org.bukkit.World world = org.bukkit.Bukkit.getWorld(worldName);
+        if (world != null) {
+            // Teleport any remaining players just in case
+            for (Player p : world.getPlayers()) {
+                p.teleport(p.getServer().getWorlds().get(0).getSpawnLocation());
+            }
+            org.bukkit.Bukkit.unloadWorld(world, false);
+            java.io.File worldFolder = world.getWorldFolder();
+            deleteWorldFolder(worldFolder);
+            plugin.getLogger().info("Deleted dungeon world: " + worldName);
+        }
+    }
+
+    // Recursively delete a world folder
+    private void deleteWorldFolder(java.io.File file) {
+        if (file.isDirectory()) {
+            for (java.io.File child : file.listFiles()) {
+                deleteWorldFolder(child);
+            }
+        }
+        file.delete();
     }
     public Optional<org.bukkit.GameMode> getPlayerPreviousGameMode(Player player) {
         return Optional.ofNullable(playerPreviousGameModes.get(player.getUniqueId()));
